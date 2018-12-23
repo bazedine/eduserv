@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  webeduservi:
+    image: webeduservi
+    build:
+      context: .\WebEduservi
+      dockerfile: Dockerfile
