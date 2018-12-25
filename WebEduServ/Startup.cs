@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace WebEduServ
 {
@@ -21,6 +22,17 @@ namespace WebEduServ
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
+
             services.AddMvc();
         }
 
@@ -38,6 +50,20 @@ namespace WebEduServ
             }
 
             app.UseStaticFiles();
+
+            // global policy - assign here or on each controller
+            app.UseCors("CorsPolicy");
+
+            //app.UseCors(
+            //            options => options.WithOrigins("http://localhost:4200/").AllowAnyMethod()
+            //           );
+
+            //app.UseCors(builder => {
+              //  builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                //                    });
+
+
+
 
             app.UseMvc(routes =>
             {
